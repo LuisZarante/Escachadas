@@ -1,94 +1,236 @@
 
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --ink: #e8e0d0; --ink-dim: #a09880; --ink-faint: #5a5248;
     --gold: #c9a84c; --gold-dim: #8a6e2e;
-    --paper: #1a1714; --paper-2: #211e1a; --paper-3: #2a2620; --paper-4: #332e27;
+    --paper: #1a1714; --paper-2: #211e1a; --paper-3: #2a2620;
     --border: rgba(201,168,76,0.18); --border-bright: rgba(201,168,76,0.45);
     --danger: #c0392b; --radius: 6px;
   }
-  body, #app { font-family: 'Jost', sans-serif; background: var(--paper); color: var(--ink); min-height: 500px; font-size: 14px; line-height: 1.6; }
+  html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+  body, #app {
+    font-family: 'Jost', sans-serif;
+    background: var(--paper); color: var(--ink);
+    min-height: 100vh; font-size: 15px; line-height: 1.6;
+    width: 100%; overflow-x: hidden;
+  }
 
-  #login-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 500px; padding: 2rem; }
-  .book-title { font-family: 'Cormorant Garamond', serif; font-size: 36px; font-weight: 300; letter-spacing: 0.06em; color: var(--gold); margin-bottom: 4px; text-align: center; }
-  .book-subtitle { font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 32px; }
-  .login-card { background: var(--paper-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 28px 32px; width: 100%; max-width: 360px; }
-  .login-card h3 { font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 18px; color: var(--gold); margin-bottom: 20px; text-align: center; }
+  /* ── LOGIN ── */
+  #login-screen {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 1.5rem;
+  }
+  .book-title {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(28px, 8vw, 38px);
+    font-weight: 300; letter-spacing: 0.06em; color: var(--gold); margin-bottom: 4px; text-align: center;
+  }
+  .book-subtitle {
+    font-size: clamp(10px, 2.5vw, 11px); letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 28px; text-align: center;
+  }
+  .login-card {
+    background: var(--paper-2); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: clamp(20px, 5vw, 32px);
+    width: 100%; max-width: 380px;
+  }
+  .login-card h3 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: clamp(16px, 4vw, 18px);
+    color: var(--gold); margin-bottom: 18px; text-align: center;
+  }
   .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 6px; }
-  .field input, .field select, .field textarea { width: 100%; background: var(--paper-3); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 9px 12px; color: var(--ink); font-family: 'Jost', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; }
-  .field textarea { resize: vertical; min-height: 80px; }
+  .field label {
+    display: block; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 6px;
+  }
+  .field input, .field select, .field textarea {
+    width: 100%; background: var(--paper-3); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 11px 14px; color: var(--ink);
+    font-family: 'Jost', sans-serif; font-size: 16px; outline: none;
+    transition: border-color 0.2s; -webkit-appearance: none; appearance: none;
+  }
+  .field textarea { resize: vertical; min-height: 90px; font-size: 15px; }
   .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--border-bright); }
+  .field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a09880' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
   .field select option { background: var(--paper-3); }
-  .btn { width: 100%; padding: 10px; background: transparent; border: 0.5px solid var(--gold-dim); border-radius: var(--radius); color: var(--gold); font-family: 'Jost', sans-serif; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+
+  .btn {
+    width: 100%; padding: 12px; background: transparent;
+    border: 0.5px solid var(--gold-dim); border-radius: var(--radius);
+    color: var(--gold); font-family: 'Jost', sans-serif; font-size: 13px;
+    letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;
+    transition: background 0.2s, border-color 0.2s; min-height: 44px;
+  }
   .btn:hover { background: rgba(201,168,76,0.08); border-color: var(--gold); }
   .btn:active { transform: scale(0.98); }
   .btn.danger { border-color: rgba(192,57,43,0.5); color: #e07060; }
   .btn.danger:hover { background: rgba(192,57,43,0.1); border-color: var(--danger); }
-  .btn.sm { width: auto; padding: 5px 14px; font-size: 11px; }
+  .btn.sm { width: auto; padding: 7px 16px; font-size: 12px; min-height: 36px; }
   .error-msg { color: #e07060; font-size: 12px; margin-top: 8px; text-align: center; min-height: 16px; }
-  .demo-hint { margin-top: 16px; font-size: 11px; color: var(--ink-faint); text-align: center; border-top: 0.5px solid var(--border); padding-top: 14px; }
-  .demo-hint span { color: var(--ink-dim); }
 
-  #app-screen { display: none; flex-direction: column; min-height: 500px; }
-  .header { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; border-bottom: 0.5px solid var(--border); background: var(--paper-2); }
-  .header-left { display: flex; align-items: baseline; gap: 10px; }
-  .header-title { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--gold); letter-spacing: 0.04em; }
-  .role-badge { font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; padding: 2px 8px; border-radius: 20px; border: 0.5px solid; }
+  /* ── APP ── */
+  #app-screen { display: none; flex-direction: column; min-height: 100vh; }
+
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px; border-bottom: 0.5px solid var(--border);
+    background: var(--paper-2); position: sticky; top: 0; z-index: 10;
+  }
+  .header-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .header-title {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 4.5vw, 22px);
+    font-weight: 300; color: var(--gold); letter-spacing: 0.04em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .role-badge {
+    font-size: 9px; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 20px; border: 0.5px solid; white-space: nowrap;
+  }
   .role-badge.viewer  { color: #7ab0d4; border-color: rgba(122,176,212,0.35); background: rgba(122,176,212,0.06); }
   .role-badge.editor  { color: #85c07a; border-color: rgba(133,192,122,0.35); background: rgba(133,192,122,0.06); }
   .role-badge.adder   { color: var(--gold); border-color: rgba(201,168,76,0.35); background: rgba(201,168,76,0.06); }
   .role-badge.admin   { color: #d4a0e0; border-color: rgba(212,160,224,0.35); background: rgba(212,160,224,0.06); }
-  .header-right { display: flex; align-items: center; gap: 12px; }
-  .user-name { font-size: 12px; color: var(--ink-dim); }
-  .tabs { display: flex; border-bottom: 0.5px solid var(--border); background: var(--paper-2); padding: 0 20px; }
-  .tab { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-faint); padding: 10px 16px; cursor: pointer; border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s; }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .user-name { font-size: 12px; color: var(--ink-dim); display: none; }
+  @media (min-width: 480px) { .user-name { display: inline; } }
+
+  /* Tabs */
+  .tabs {
+    display: flex; border-bottom: 0.5px solid var(--border);
+    background: var(--paper-2); padding: 0 12px; overflow-x: auto;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink-faint); padding: 11px 14px; cursor: pointer;
+    border-bottom: 1.5px solid transparent; transition: color 0.2s, border-color 0.2s;
+    white-space: nowrap; flex-shrink: 0;
+  }
   .tab:hover { color: var(--ink-dim); }
   .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
-  .content { padding: 20px; flex: 1; overflow-y: auto; }
 
-  .search-bar { display: flex; gap: 10px; margin-bottom: 18px; align-items: center; flex-wrap: wrap; }
-  .search-wrap { position: relative; flex: 1; min-width: 180px; }
-  .search-wrap input { width: 100%; background: var(--paper-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 8px 12px 8px 34px; color: var(--ink); font-family: 'Jost', sans-serif; font-size: 13px; outline: none; transition: border-color 0.2s; }
+  /* Content */
+  .content { padding: 16px; flex: 1; }
+
+  /* Search bar */
+  .search-bar {
+    display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap;
+  }
+  .search-wrap { position: relative; flex: 1; min-width: 140px; }
+  .search-wrap input {
+    width: 100%; background: var(--paper-2); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 10px 12px 10px 34px; color: var(--ink);
+    font-family: 'Jost', sans-serif; font-size: 16px; outline: none;
+    transition: border-color 0.2s; -webkit-appearance: none;
+  }
   .search-wrap input:focus { border-color: var(--border-bright); }
-  .search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--ink-faint); font-size: 14px; pointer-events: none; }
-  .author-filter { background: var(--paper-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 8px 12px; color: var(--ink); font-family: 'Jost', sans-serif; font-size: 13px; outline: none; cursor: pointer; min-width: 150px; }
-  .author-filter:focus { border-color: var(--border-bright); }
+  .search-icon {
+    position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-faint); font-size: 15px; pointer-events: none;
+  }
+  .author-filter {
+    background: var(--paper-2); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 10px 32px 10px 12px; color: var(--ink);
+    font-family: 'Jost', sans-serif; font-size: 15px; outline: none; cursor: pointer;
+    -webkit-appearance: none; appearance: none; min-width: 130px; flex: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23a09880' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center;
+  }
   .author-filter option { background: var(--paper-3); }
-  .search-results-info { font-size: 11px; color: var(--ink-faint); letter-spacing: 0.08em; align-self: center; }
-  .clear-btn { background: transparent; border: 0.5px solid var(--border); border-radius: var(--radius); color: var(--ink-faint); font-size: 11px; padding: 6px 12px; cursor: pointer; font-family: 'Jost', sans-serif; letter-spacing: 0.1em; text-transform: uppercase; transition: color 0.2s, border-color 0.2s; white-space: nowrap; }
+  .search-bottom { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .search-results-info { font-size: 11px; color: var(--ink-faint); letter-spacing: 0.08em; }
+  .clear-btn {
+    background: transparent; border: 0.5px solid var(--border); border-radius: var(--radius);
+    color: var(--ink-faint); font-size: 11px; padding: 5px 12px; cursor: pointer;
+    font-family: 'Jost', sans-serif; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s, border-color 0.2s; min-height: 30px;
+  }
   .clear-btn:hover { color: var(--ink-dim); border-color: var(--border-bright); }
 
-  .author-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-  .chip { font-size: 11px; padding: 3px 12px; border-radius: 20px; border: 0.5px solid var(--border); color: var(--ink-dim); background: var(--paper-2); cursor: pointer; transition: all 0.15s; letter-spacing: 0.05em; }
+  /* Chips */
+  .author-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+  .chip {
+    font-size: 11px; padding: 4px 12px; border-radius: 20px;
+    border: 0.5px solid var(--border); color: var(--ink-dim); background: var(--paper-2);
+    cursor: pointer; transition: all 0.15s; letter-spacing: 0.04em; min-height: 28px;
+    display: flex; align-items: center;
+  }
   .chip:hover { border-color: var(--gold-dim); color: var(--ink); }
   .chip.active { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
 
-  .phrase-entry { display: flex; gap: 14px; padding: 14px 0; border-bottom: 0.5px solid var(--border); align-items: flex-start; }
-  .phrase-num { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 300; color: var(--gold-dim); min-width: 36px; text-align: right; margin-top: 1px; }
-  .phrase-body { flex: 1; }
-  .phrase-text { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 17px; font-weight: 300; color: var(--ink); line-height: 1.5; margin-bottom: 5px; }
-  .phrase-meta { font-size: 11px; color: var(--ink-faint); display: flex; gap: 10px; flex-wrap: wrap; }
+  /* Phrases */
+  .phrase-entry {
+    display: flex; gap: 12px; padding: 14px 0;
+    border-bottom: 0.5px solid var(--border); align-items: flex-start;
+  }
+  .phrase-num {
+    font-family: 'Cormorant Garamond', serif; font-size: clamp(16px, 4vw, 20px);
+    font-weight: 300; color: var(--gold-dim); min-width: 30px; text-align: right; margin-top: 2px;
+  }
+  .phrase-body { flex: 1; min-width: 0; }
+  .phrase-text {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: clamp(15px, 4vw, 17px); font-weight: 300; color: var(--ink);
+    line-height: 1.55; margin-bottom: 6px; word-break: break-word;
+  }
+  .phrase-meta {
+    font-size: 11px; color: var(--ink-faint); display: flex; gap: 8px; flex-wrap: wrap;
+  }
   .phrase-author { color: var(--ink-dim); }
-  .phrase-actions { display: flex; gap: 6px; margin-top: 8px; }
+  .phrase-actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
   mark { background: rgba(201,168,76,0.22); color: var(--gold); border-radius: 2px; font-style: inherit; }
-  .edit-row { margin-top: 10px; background: var(--paper-3); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 12px; }
-  .edit-actions { display: flex; gap: 8px; margin-top: 8px; }
-  .empty-state { text-align: center; color: var(--ink-faint); padding: 40px 0; font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; font-style: italic; }
 
-  .add-panel { background: var(--paper-2); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 560px; }
-  .add-panel h3 { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: var(--gold); margin-bottom: 18px; }
+  .edit-row {
+    margin-top: 10px; background: var(--paper-3);
+    border: 0.5px solid var(--border); border-radius: var(--radius); padding: 12px;
+  }
+  .edit-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+  .empty-state {
+    text-align: center; color: var(--ink-faint); padding: 40px 0;
+    font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 300; font-style: italic;
+  }
 
-  .user-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--paper-3); border: 0.5px solid var(--border); border-radius: var(--radius); margin-bottom: 8px; }
-  .user-info { display: flex; align-items: center; gap: 10px; }
-  .section-title { font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400; color: var(--gold); margin-bottom: 16px; border-bottom: 0.5px solid var(--border); padding-bottom: 8px; }
-  .divider { border: none; border-top: 0.5px solid var(--border); margin: 20px 0; }
-  .inline-form { background: var(--paper-3); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 16px; margin-top: 12px; }
-  .inline-form h4 { font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+  /* Add panel */
+  .add-panel {
+    background: var(--paper-2); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 18px; max-width: 560px;
+  }
+  .add-panel h3 {
+    font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400;
+    color: var(--gold); margin-bottom: 16px;
+  }
+
+  /* Admin */
+  .user-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; background: var(--paper-3);
+    border: 0.5px solid var(--border); border-radius: var(--radius); margin-bottom: 8px;
+    gap: 8px; flex-wrap: wrap;
+  }
+  .user-info { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif; font-size: 20px; font-weight: 400;
+    color: var(--gold); margin-bottom: 14px; border-bottom: 0.5px solid var(--border); padding-bottom: 8px;
+  }
+  .divider { border: none; border-top: 0.5px solid var(--border); margin: 18px 0; }
+  .inline-form {
+    background: var(--paper-3); border: 0.5px solid var(--border);
+    border-radius: var(--radius); padding: 14px; margin-top: 12px;
+  }
+  .inline-form h4 {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--ink-dim); margin-bottom: 12px;
+  }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .info-box { font-size: 12px; color: var(--ink-dim); background: var(--paper-3); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 10px 14px; margin-bottom: 14px; }
+  @media (max-width: 400px) { .row2 { grid-template-columns: 1fr; } }
+  .info-box {
+    font-size: 12px; color: var(--ink-dim); background: var(--paper-3);
+    border: 0.5px solid var(--border); border-radius: var(--radius);
+    padding: 10px 12px; margin-bottom: 14px; line-height: 1.7;
+  }
 </style>
 
 <div id="login-screen">
@@ -96,14 +238,10 @@
   <div class="book-subtitle">Colección privada · Edición digital</div>
   <div class="login-card">
     <h3>Acceder al libro</h3>
-    <div class="field"><label>Usuario</label><input id="l-user" type="text" placeholder="Escribe tu usuario" onkeydown="if(event.key==='Enter')doLogin()"></div>
-    <div class="field"><label>Contraseña</label><input id="l-pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="field"><label>Usuario</label><input id="l-user" type="text" autocomplete="username" placeholder="Escribe tu usuario" onkeydown="if(event.key==='Enter')doLogin()"></div>
+    <div class="field"><label>Contraseña</label><input id="l-pass" type="password" autocomplete="current-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"></div>
     <button class="btn" onclick="doLogin()">Entrar</button>
     <div class="error-msg" id="l-err"></div>
-    <div class="demo-hint">
-      Cuentas de prueba:<br>
-      <span>admin / admin123</span> · <span>editor1 / 1234</span> · <span>lector1 / 1234</span> · <span>redactor1 / 1234</span>
-    </div>
   </div>
 </div>
 
@@ -124,7 +262,6 @@
 
 <script>
 const ROLE_LABEL = { viewer:'Lector', editor:'Editor', adder:'Redactor', admin:'Admin' };
-
 let state = {
   currentUser: null,
   users: [
@@ -142,17 +279,13 @@ let state = {
     { id:6, text:'La imaginación es más importante que el conocimiento.', author:'Albert Einstein', addedBy:'Administrador', date:'2024-05-10' },
     { id:7, text:'Lo que no te mata te hace más fuerte.', author:'Friedrich Nietzsche', addedBy:'Sofía Cruz', date:'2024-06-01' },
   ],
-  activeTab: 'book',
-  editingId: null,
-  nextPhraseId: 8,
-  nextUserId: 5,
-  searchText: '',
-  filterAuthor: '',
+  activeTab:'book', editingId:null, nextPhraseId:8, nextUserId:5,
+  searchText:'', filterAuthor:'',
 };
 
-const canEdit  = () => ['editor','admin'].includes(state.currentUser?.role);
-const canAdd   = () => ['adder','editor','admin'].includes(state.currentUser?.role);
-const isAdmin  = () => state.currentUser?.role === 'admin';
+const canEdit = () => ['editor','admin'].includes(state.currentUser?.role);
+const canAdd  = () => ['adder','editor','admin'].includes(state.currentUser?.role);
+const isAdmin = () => state.currentUser?.role === 'admin';
 
 function doLogin() {
   const u = document.getElementById('l-user').value.trim();
@@ -164,223 +297,160 @@ function doLogin() {
   document.getElementById('app-screen').style.display = 'flex';
   document.getElementById('uname').textContent = found.name;
   const rb = document.getElementById('rbadge');
-  rb.textContent = ROLE_LABEL[found.role];
-  rb.className = 'role-badge ' + found.role;
-  state.activeTab = 'book'; state.searchText = ''; state.filterAuthor = '';
+  rb.textContent = ROLE_LABEL[found.role]; rb.className = 'role-badge ' + found.role;
+  state.activeTab='book'; state.searchText=''; state.filterAuthor='';
   renderTabs(); renderContent();
 }
 
 function doLogout() {
-  state.currentUser = null; state.editingId = null;
-  state.searchText = ''; state.filterAuthor = '';
-  document.getElementById('app-screen').style.display = 'none';
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('l-pass').value = '';
-  document.getElementById('l-err').textContent = '';
+  state.currentUser=null; state.editingId=null; state.searchText=''; state.filterAuthor='';
+  document.getElementById('app-screen').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('l-pass').value='';
+  document.getElementById('l-err').textContent='';
 }
 
 function renderTabs() {
-  const tabs = [{ id:'book', label:'Las escachadas' }];
-  if (canAdd()) tabs.push({ id:'add', label:'Agregar escachada' });
-  if (isAdmin()) tabs.push({ id:'admin', label:'Usuarios' });
-  document.getElementById('tabs').innerHTML = tabs.map(t =>
+  const tabs=[{id:'book',label:'Las escachadas'}];
+  if(canAdd()) tabs.push({id:'add',label:'Agregar'});
+  if(isAdmin()) tabs.push({id:'admin',label:'Usuarios'});
+  document.getElementById('tabs').innerHTML = tabs.map(t=>
     `<div class="tab ${t.id===state.activeTab?'active':''}" onclick="setTab('${t.id}')">${t.label}</div>`
   ).join('');
 }
+function setTab(id){state.activeTab=id;state.editingId=null;renderTabs();renderContent();}
 
-function setTab(id) { state.activeTab=id; state.editingId=null; renderTabs(); renderContent(); }
-
-function renderContent() {
-  const el = document.getElementById('content');
-  if (state.activeTab==='book')  el.innerHTML = renderBook();
-  if (state.activeTab==='add')   el.innerHTML = renderAddForm();
-  if (state.activeTab==='admin') el.innerHTML = renderAdmin();
+function renderContent(){
+  const el=document.getElementById('content');
+  if(state.activeTab==='book')  el.innerHTML=renderBook();
+  if(state.activeTab==='add')   el.innerHTML=renderAddForm();
+  if(state.activeTab==='admin') el.innerHTML=renderAdmin();
 }
 
-function getAuthors() {
-  return [...new Set(state.phrases.map(p => p.author))].sort();
+function getAuthors(){return[...new Set(state.phrases.map(p=>p.author))].sort();}
+
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function highlight(text,q){
+  if(!q) return esc(text);
+  const re=new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi');
+  return esc(text).replace(re,'<mark>$1</mark>');
+}
+function filtered(){
+  const q=state.searchText.toLowerCase().trim(), a=state.filterAuthor;
+  return state.phrases.filter(p=>
+    (!q||p.text.toLowerCase().includes(q)||p.author.toLowerCase().includes(q))&&(!a||p.author===a)
+  );
 }
 
-function highlight(text, query) {
-  if (!query) return escHtml(text);
-  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g,'\\$&') + ')', 'gi');
-  return escHtml(text).replace(re, '<mark>$1</mark>');
-}
-function escHtml(s) {
-  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-function filteredPhrases() {
-  const q = state.searchText.toLowerCase().trim();
-  const a = state.filterAuthor;
-  return state.phrases.filter(p => {
-    const matchText   = !q || p.text.toLowerCase().includes(q) || p.author.toLowerCase().includes(q);
-    const matchAuthor = !a || p.author === a;
-    return matchText && matchAuthor;
-  });
-}
-
-function renderBook() {
-  const authors = getAuthors();
-  const results = filteredPhrases();
-  const q = state.searchText;
-  const isFiltering = q || state.filterAuthor;
-
-  const chips = authors.map(a =>
-    `<span class="chip ${state.filterAuthor===a?'active':''}" onclick="toggleChip('${escHtml(a)}')">${escHtml(a)}</span>`
-  ).join('');
-
-  const infoText = isFiltering
-    ? `<span class="search-results-info">${results.length} escachada${results.length!==1?'s':''} de ${state.phrases.length}</span>`
-    : `<span class="search-results-info">${state.phrases.length} escachada${state.phrases.length!==1?'s':''}</span>`;
-
-  const clearBtn = isFiltering
-    ? `<button class="clear-btn" onclick="clearSearch()">✕ Limpiar</button>`
-    : '';
-
-  const searchBar = `
+function renderBook(){
+  const authors=getAuthors(), results=filtered(), q=state.searchText, isF=q||state.filterAuthor;
+  const chips=authors.map(a=>`<span class="chip ${state.filterAuthor===a?'active':''}" onclick="toggleChip('${esc(a)}')">${esc(a)}</span>`).join('');
+  const info=isF?`${results.length} de ${state.phrases.length} escachada${results.length!==1?'s':''}`:`${state.phrases.length} escachada${state.phrases.length!==1?'s':''}`;
+  const sb=`
     <div class="search-bar">
       <div class="search-wrap">
         <span class="search-icon">⌕</span>
-        <input type="text" placeholder="Buscar escachada o autor…" value="${escHtml(q)}"
-          oninput="onSearch(this.value)" id="search-input">
+        <input type="text" placeholder="Buscar…" value="${esc(q)}" oninput="onSearch(this.value)" id="search-input" autocomplete="off">
       </div>
       <select class="author-filter" onchange="onFilterAuthor(this.value)">
         <option value="">Todos los autores</option>
-        ${authors.map(a => `<option value="${escHtml(a)}" ${state.filterAuthor===a?'selected':''}>${escHtml(a)}</option>`).join('')}
+        ${authors.map(a=>`<option value="${esc(a)}" ${state.filterAuthor===a?'selected':''}>${esc(a)}</option>`).join('')}
       </select>
-      ${infoText}
-      ${clearBtn}
     </div>
-    <div class="author-chips">${chips}</div>
-  `;
-
-  if (!results.length) {
-    return searchBar + `<div class="empty-state">Ninguna escachada coincide con la búsqueda.</div>`;
-  }
-
-  const list = results.map((p) => {
-    const globalNum = state.phrases.indexOf(p) + 1;
-    const isEditing = state.editingId === p.id;
-    const tHighlight = highlight(p.text, q);
-    const aHighlight = highlight(p.author, q);
-    return `
-    <div class="phrase-entry">
-      <div class="phrase-num">${String(globalNum).padStart(2,'0')}</div>
+    <div class="search-bottom">
+      <span class="search-results-info">${info}</span>
+      ${isF?`<button class="clear-btn" onclick="clearSearch()">✕ Limpiar</button>`:''}
+    </div>
+    <div class="author-chips">${chips}</div>`;
+  if(!results.length) return sb+`<div class="empty-state">Ninguna escachada coincide.</div>`;
+  return sb+results.map(p=>{
+    const n=state.phrases.indexOf(p)+1, ed=state.editingId===p.id;
+    return `<div class="phrase-entry">
+      <div class="phrase-num">${String(n).padStart(2,'0')}</div>
       <div class="phrase-body">
-        ${isEditing ? `
-          <div class="edit-row">
-            <div class="field"><label>Escachada</label><textarea id="et-${p.id}" rows="3">${escHtml(p.text)}</textarea></div>
-            <div class="field"><label>Autor</label><input id="ea-${p.id}" value="${escHtml(p.author)}"></div>
-            <div class="edit-actions">
-              <button class="btn sm" onclick="saveEdit(${p.id})">Guardar</button>
-              <button class="btn sm danger" onclick="cancelEdit()">Cancelar</button>
-            </div>
-          </div>
-        ` : `
-          <div class="phrase-text">"${tHighlight}"</div>
+        ${ed?`<div class="edit-row">
+          <div class="field"><label>Escachada</label><textarea id="et-${p.id}" rows="3">${esc(p.text)}</textarea></div>
+          <div class="field"><label>Autor</label><input id="ea-${p.id}" value="${esc(p.author)}"></div>
+          <div class="edit-actions">
+            <button class="btn sm" onclick="saveEdit(${p.id})">Guardar</button>
+            <button class="btn sm danger" onclick="cancelEdit()">Cancelar</button>
+          </div></div>`
+        :`<div class="phrase-text">"${highlight(p.text,q)}"</div>
           <div class="phrase-meta">
-            <span class="phrase-author">— ${aHighlight}</span>
-            <span>Añadida por ${escHtml(p.addedBy)}</span>
+            <span class="phrase-author">— ${highlight(p.author,q)}</span>
+            <span>Por ${esc(p.addedBy)}</span>
             <span>${p.date}</span>
           </div>
-          ${canEdit() ? `<div class="phrase-actions">
+          ${canEdit()?`<div class="phrase-actions">
             <button class="btn sm" onclick="startEdit(${p.id})">Editar</button>
             ${isAdmin()?`<button class="btn sm danger" onclick="deletePhrase(${p.id})">Eliminar</button>`:''}
-          </div>` : ''}
-        `}
-      </div>
-    </div>`;
+          </div>`:''}`}
+      </div></div>`;
   }).join('');
-
-  return searchBar + list;
 }
 
-function onSearch(val) {
-  state.searchText = val; state.editingId = null;
-  document.getElementById('content').innerHTML = renderBook();
-  const inp = document.getElementById('search-input');
-  if (inp) { inp.focus(); const l = inp.value.length; inp.setSelectionRange(l,l); }
+function onSearch(v){
+  state.searchText=v; state.editingId=null;
+  document.getElementById('content').innerHTML=renderBook();
+  const i=document.getElementById('search-input');
+  if(i){i.focus();const l=i.value.length;i.setSelectionRange(l,l);}
+}
+function onFilterAuthor(v){state.filterAuthor=v;state.editingId=null;renderContent();}
+function toggleChip(a){state.filterAuthor=state.filterAuthor===a?'':a;state.editingId=null;renderContent();}
+function clearSearch(){state.searchText='';state.filterAuthor='';state.editingId=null;renderContent();}
+function startEdit(id){state.editingId=id;renderContent();}
+function cancelEdit(){state.editingId=null;renderContent();}
+function saveEdit(id){
+  const t=document.getElementById('et-'+id)?.value.trim();
+  const a=document.getElementById('ea-'+id)?.value.trim();
+  if(!t||!a)return;
+  const p=state.phrases.find(x=>x.id===id);
+  if(p){p.text=t;p.author=a;}
+  state.editingId=null;renderContent();
+}
+function deletePhrase(id){
+  if(!confirm('¿Eliminar esta escachada?'))return;
+  state.phrases=state.phrases.filter(x=>x.id!==id);renderContent();
 }
 
-function onFilterAuthor(val) {
-  state.filterAuthor = val; state.editingId = null; renderContent();
-}
-
-function toggleChip(author) {
-  state.filterAuthor = state.filterAuthor === author ? '' : author;
-  state.editingId = null; renderContent();
-}
-
-function clearSearch() {
-  state.searchText = ''; state.filterAuthor = ''; state.editingId = null; renderContent();
-}
-
-function startEdit(id) { state.editingId=id; renderContent(); }
-function cancelEdit()  { state.editingId=null; renderContent(); }
-
-function saveEdit(id) {
-  const t = document.getElementById('et-'+id)?.value.trim();
-  const a = document.getElementById('ea-'+id)?.value.trim();
-  if (!t||!a) return;
-  const p = state.phrases.find(x=>x.id===id);
-  if (p) { p.text=t; p.author=a; }
-  state.editingId=null; renderContent();
-}
-
-function deletePhrase(id) {
-  if (!confirm('¿Eliminar esta escachada?')) return;
-  state.phrases = state.phrases.filter(x=>x.id!==id);
-  renderContent();
-}
-
-function renderAddForm() {
-  return `
-  <div class="add-panel">
+function renderAddForm(){
+  return `<div class="add-panel">
     <h3>Nueva escachada</h3>
     <div class="field"><label>Texto de la escachada</label>
       <textarea id="nf-text" rows="4" placeholder="Escribe la escachada aquí..."></textarea></div>
     <div class="field"><label>Autor</label>
-      <input id="nf-author" type="text" placeholder="Nombre del autor" list="authors-list">
-      <datalist id="authors-list">
-        ${getAuthors().map(a=>`<option value="${escHtml(a)}">`).join('')}
-      </datalist>
+      <input id="nf-author" type="text" placeholder="Nombre del autor" list="authors-list" autocomplete="off">
+      <datalist id="authors-list">${getAuthors().map(a=>`<option value="${esc(a)}">`).join('')}</datalist>
     </div>
     <button class="btn" onclick="addPhrase()" style="margin-top:4px">Añadir al libro</button>
     <div class="error-msg" id="nf-err"></div>
   </div>`;
 }
-
-function addPhrase() {
-  const t = document.getElementById('nf-text')?.value.trim();
-  const a = document.getElementById('nf-author')?.value.trim();
-  if (!t) { document.getElementById('nf-err').textContent='El texto no puede estar vacío.'; return; }
-  if (!a) { document.getElementById('nf-err').textContent='Indica el autor de la escachada.'; return; }
-  const today = new Date().toISOString().slice(0,10);
-  state.phrases.push({ id:state.nextPhraseId++, text:t, author:a, addedBy:state.currentUser.name, date:today });
-  state.activeTab='book'; renderTabs(); renderContent();
+function addPhrase(){
+  const t=document.getElementById('nf-text')?.value.trim();
+  const a=document.getElementById('nf-author')?.value.trim();
+  if(!t){document.getElementById('nf-err').textContent='El texto no puede estar vacío.';return;}
+  if(!a){document.getElementById('nf-err').textContent='Indica el autor.';return;}
+  const today=new Date().toISOString().slice(0,10);
+  state.phrases.push({id:state.nextPhraseId++,text:t,author:a,addedBy:state.currentUser.name,date:today});
+  state.activeTab='book';renderTabs();renderContent();
 }
 
-function renderAdmin() {
-  const userList = state.users.map(u=>`
-    <div class="user-row">
-      <div class="user-info">
-        <span class="role-badge ${u.role}">${ROLE_LABEL[u.role]}</span>
-        <span style="font-size:14px">${escHtml(u.name)}</span>
-        <span style="font-size:12px;color:var(--ink-faint)">@${escHtml(u.username)}</span>
-      </div>
-      ${u.username!=='admin'?`<button class="btn sm danger" onclick="deleteUser(${u.id})">Eliminar</button>`:''}
-    </div>`).join('');
-  return `
-  <div class="section-title">Usuarios del libro</div>
-  <div class="info-box">
-    <strong>Permisos:</strong> Lector = solo ver · Redactor = ver + agregar · Editor = ver + agregar + editar · Admin = acceso completo
-  </div>
-  ${userList}
+function renderAdmin(){
+  return `<div class="section-title">Usuarios del libro</div>
+  <div class="info-box"><strong>Permisos:</strong> Lector = ver · Redactor = ver + agregar · Editor = ver + agregar + editar · Admin = acceso completo</div>
+  ${state.users.map(u=>`<div class="user-row">
+    <div class="user-info">
+      <span class="role-badge ${u.role}">${ROLE_LABEL[u.role]}</span>
+      <span style="font-size:14px">${esc(u.name)}</span>
+      <span style="font-size:12px;color:var(--ink-faint)">@${esc(u.username)}</span>
+    </div>
+    ${u.username!=='admin'?`<button class="btn sm danger" onclick="deleteUser(${u.id})">Eliminar</button>`:''}
+  </div>`).join('')}
   <hr class="divider">
-  <div class="section-title" style="font-size:16px;margin-top:0">Crear nuevo usuario</div>
+  <div class="section-title" style="font-size:16px;margin-top:0">Crear usuario</div>
   <div class="inline-form">
-    <h4>Datos del nuevo usuario</h4>
+    <h4>Nuevo usuario</h4>
     <div class="row2">
       <div class="field"><label>Nombre</label><input id="nu-name" placeholder="Nombre completo"></div>
       <div class="field"><label>Usuario</label><input id="nu-user" placeholder="nombre_usuario"></div>
@@ -396,25 +466,23 @@ function renderAdmin() {
         </select>
       </div>
     </div>
-    <button class="btn" onclick="createUser()" style="max-width:180px">Crear usuario</button>
+    <button class="btn" onclick="createUser()" style="max-width:200px">Crear usuario</button>
     <div class="error-msg" id="nu-err"></div>
   </div>`;
 }
-
-function deleteUser(id) {
-  if (!confirm('¿Eliminar este usuario?')) return;
-  state.users = state.users.filter(x=>x.id!==id); renderContent();
+function deleteUser(id){
+  if(!confirm('¿Eliminar este usuario?'))return;
+  state.users=state.users.filter(x=>x.id!==id);renderContent();
 }
-
-function createUser() {
+function createUser(){
   const name=document.getElementById('nu-name')?.value.trim();
   const user=document.getElementById('nu-user')?.value.trim();
   const pass=document.getElementById('nu-pass')?.value;
   const role=document.getElementById('nu-role')?.value;
   const err=document.getElementById('nu-err');
-  if (!name||!user||!pass) { err.textContent='Completa todos los campos.'; return; }
-  if (state.users.find(u=>u.username===user)) { err.textContent='Ese nombre de usuario ya existe.'; return; }
-  state.users.push({ id:state.nextUserId++, username:user, password:pass, role, name });
-  err.textContent=''; renderContent();
+  if(!name||!user||!pass){err.textContent='Completa todos los campos.';return;}
+  if(state.users.find(u=>u.username===user)){err.textContent='Ese usuario ya existe.';return;}
+  state.users.push({id:state.nextUserId++,username:user,password:pass,role,name});
+  err.textContent='';renderContent();
 }
 </script>
